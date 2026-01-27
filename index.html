@@ -19,15 +19,20 @@
             text-align: center;
         }
 
-        #yes-text,
-        #no-text,
-        #some-text {
-            font-size: 50px;
-            padding-top: 20px;
-            padding-bottom: 10px;
-            text-align: center;
-            color: #FFD1B0;
-            animation: fadeIn 1s ease-in;
+        #first-text {
+            font-size: 14px;
+        }
+
+        #second-text {
+            font-size: 25px;
+        }
+
+        #third-text {
+            font-size: 41px;
+        }
+
+        #fourth-text {
+            font-size: 20px;
         }
 
         @keyframes fadeIn {
@@ -37,6 +42,17 @@
             to {
                 opacity: 1;
             }
+        }
+
+        #yes-text,
+        #no-text,
+        #some-text {
+            font-size: 50px;
+            padding-top: 20px;
+            padding-bottom: 10px;
+            text-align: center;
+            color: #d6003d;
+            animation: fadeIn 1s ease-in;
         }
 
         input[type="text"] {
@@ -54,16 +70,14 @@
 
 <body>
 
-<h4 id="first-text" style="color:#ADE2FF;">CAESAR DAS IST DAS VERSCHLUESSELUNGSVERFAHREN DES
-    NAECHSTEN TEXTES</h4>
+<h1 id="first-text" style="color:#ADE2FF;">DER CAESAR CIPHER IST DAS VERSCHLUESSELUNGSVERFAHREN DES
+    NAECHSTEN TEXTES</h1>
 
-<h3 id="second-text" style="color:#C480FF;">JWUSBSFS WB RSF DZIG QWHM KC RWS YCSFDSFUFCSGGSB
-    GWQVHPOF KIFRSB SWB KSU
-    RSG HFOBGDCFHG ROG
-    SFGHS AOZ OZG KWF PSWRS GC FWQVHWU ZOQVHSB ROG WGH RSF GQVZISGGSZ</h3>
+<h1 id="second-text" style="color:#C480FF;">JWUSBSFS QWDVSF WB RSF DZIG QWHM KC RWS YCSFDSFUFCSGGSB GWQVHPOF KIFRSB SWB
+    KSU RSG HFOBGDCFHG ROG WGH RSF GQVZISGGSZ</h1>
 
-<h2 id="third-text" style="color:#FF8CCA;">BSJHHIH RXTYSC LNKSG TMESD MNTLTH YVPPC CVQPCHVB YLFVRH
-    CEJHLDRR</h2>
+<h1 id="third-text" style="color:#FF8CCA;">BSJHHIH RXTYSC OXI EJISI STYXJ FJRLVG FPUVV YTQRBOPG EEBTRJ BLDMRWNP HRG TDM
+    UEH ZIPKZCW</h1>
 
 <h1 id="fourth-text" style="color:#FFD1B0;">Isk kdoj tisk ad jigfdc wjendwq, ho tr jqvdp df
     Udcjgqigpqdw fdskpq, rgt
@@ -72,48 +86,51 @@
 <input type="text" placeholder="Deine Antwort...">
 
 <script type="module">
-  import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-  import {getDatabase, ref, push} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+    import {initializeApp} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import {getDatabase, ref, push} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDwQdbpz9ATErQzUb8f8V8Pjl27hwYRBH0",
-    authDomain: "some-project-fb901.firebaseapp.com",
-    databaseURL: "https://some-project-fb901-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "some-project-fb901",
-    storageBucket: "some-project-fb901.firebasestorage.app",
-    messagingSenderId: "1025998926199",
-    appId: "1:1025998926199:web:9cb1310e20acef57d03172"
-  };
+    const firebaseConfig = {
+        apiKey: "AIzaSyDwQdbpz9ATErQzUb8f8V8Pjl27hwYRBH0",
+        authDomain: "some-project-fb901.firebaseapp.com",
+        databaseURL: "https://some-project-fb901-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "some-project-fb901",
+        storageBucket: "some-project-fb901.firebasestorage.app",
+        messagingSenderId: "1025998926199",
+        appId: "1:1025998926199:web:9cb1310e20acef57d03172"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const database = getDatabase(app);
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
 
-  const input = document.querySelector('input[type="text"]');
+    const input = document.querySelector('input[type="text"]');
 
-  // --- DEBUG START ---
-  alert("JS LOADED");
+    input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+            const answer = input.value.trim().toLowerCase();
 
-  input.addEventListener("keydown", async (e) => {
-    if (e.key !== "Enter") return;
-    e.preventDefault();
+            const oldMessages = document.querySelectorAll('#yes-text, #no-text, #some-text');
+            oldMessages.forEach(msg => msg.remove());
 
-    const answer = input.value.trim();
-    alert("ENTER DETECTED: " + answer);
+            let responseText = '';
+            let responseId = '';
 
-    try {
-      await push(ref(database, "user_inputs"), {
-        text: answer,
-        timestamp: new Date().toISOString(),
-        userAgent: navigator.userAgent
-      });
-      alert("WRITE OK");
-    } catch (err) {
-      alert("WRITE FAILED: " + err.message);
-    }
-  });
-  // --- DEBUG END ---
-</script>
+            if (answer.includes('ja')) {
+                responseText = 'Moi... Dankeee <3';
+                responseId = 'yes-text';
+            } else if (answer.includes('nein')) {
+                responseText = 'Ohhh... Schadeee :o';
+                responseId = 'no-text';
+            } else {
+                responseText = 'Entschlüssel den Text bevor du antwortest ;)';
+                responseId = 'some-text';
+            }
 
+            const responseElement = document.createElement('h4');
+            responseElement.id = responseId;
+            responseElement.textContent = responseText;
+            document.body.appendChild(responseElement);
+            input.value = '';
+        }
+    }); </script>
 </body>
-
 </html>
