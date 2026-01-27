@@ -2,78 +2,78 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <title>???</title>
+    <meta charset="UTF-8">
+    <title>???</title>
 
-  <style>
-    body {
-      background-color: #400417;
-    }
+    <style>
+        body {
+            background-color: #400417;
+        }
 
-    #first-text,
-    #second-text,
-    #third-text,
-    #fourth-text {
-      padding-top: 20px;
-      padding-bottom: 10px;
-      text-align: center;
-    }
+        #first-text,
+        #second-text,
+        #third-text,
+        #fourth-text {
+            padding-top: 20px;
+            padding-bottom: 10px;
+            text-align: center;
+        }
 
-    #yes-text,
-    #no-text,
-    #some-text {
-      font-size: 50px;
-      padding-top: 20px;
-      padding-bottom: 10px;
-      text-align: center;
-      color: #FFD1B0;
-      animation: fadeIn 1s ease-in;
-    }
+        #yes-text,
+        #no-text,
+        #some-text {
+            font-size: 50px;
+            padding-top: 20px;
+            padding-bottom: 10px;
+            text-align: center;
+            color: #FFD1B0;
+            animation: fadeIn 1s ease-in;
+        }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
 
-    input[type="text"] {
-      display: block;
-      margin: 70px auto 0;
-      width: 500px;
-      max-width: 90%;
-      padding: 14px;
-      font-size: 1.3rem;
-      border-radius: 6px;
-      border: 2px solid #888;
-    }
-  </style>
+        input[type="text"] {
+            display: block;
+            margin: 70px auto 0;
+            width: 500px;
+            max-width: 90%;
+            padding: 14px;
+            font-size: 1.3rem;
+            border-radius: 6px;
+            border: 2px solid #888;
+        }
+    </style>
 </head>
 
 <body>
 
 <h4 id="first-text" style="color:#ADE2FF;">CAESAR DAS IST DAS VERSCHLUESSELUNGSVERFAHREN DES
-  NAECHSTEN TEXTES</h4>
+    NAECHSTEN TEXTES</h4>
 
 <h3 id="second-text" style="color:#C480FF;">JWUSBSFS WB RSF DZIG QWHM KC RWS YCSFDSFUFCSGGSB
-  GWQVHPOF KIFRSB SWB KSU
-  RSG HFOBGDCFHG ROG
-  SFGHS AOZ OZG KWF PSWRS GC FWQVHWU ZOQVHSB ROG WGH RSF GQVZISGGSZ</h3>
+    GWQVHPOF KIFRSB SWB KSU
+    RSG HFOBGDCFHG ROG
+    SFGHS AOZ OZG KWF PSWRS GC FWQVHWU ZOQVHSB ROG WGH RSF GQVZISGGSZ</h3>
 
 <h2 id="third-text" style="color:#FF8CCA;">BSJHHIH RXTYSC LNKSG TMESD MNTLTH YVPPC CVQPCHVB YLFVRH
-  CEJHLDRR</h2>
+    CEJHLDRR</h2>
 
 <h1 id="fourth-text" style="color:#FFD1B0;">Isk kdoj tisk ad jigfdc wjendwq, ho tr jqvdp df
-  Udcjgqigpqdw fdskpq, rgt
-  tr pdwqjpq gjig, dcph... viccpq tr fjigj Udcjgqigj pjig? :)</h1>
+    Udcjgqigpqdw fdskpq, rgt
+    tr pdwqjpq gjig, dcph... viccpq tr fjigj Udcjgqigj pjig? :)</h1>
 
 <input type="text" placeholder="Deine Antwort...">
 
 <script type="module">
-  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-  import { getDatabase, ref, push } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+  import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+  import {getDatabase, ref, push} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
   const firebaseConfig = {
     apiKey: "AIzaSyDwQdbpz9ATErQzUb8f8V8Pjl27hwYRBH0",
@@ -84,53 +84,34 @@
     messagingSenderId: "1025998926199",
     appId: "1:1025998926199:web:9cb1310e20acef57d03172"
   };
-  
+
   const app = initializeApp(firebaseConfig);
   const database = getDatabase(app);
 
   const input = document.querySelector('input[type="text"]');
 
-  input.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter') {
-      const answer = input.value.trim();
-      const answerLower = answer.toLowerCase();
+  // --- DEBUG START ---
+  alert("JS LOADED");
 
-      const inputsRef = ref(database, 'user_inputs');
-      push(inputsRef, {
+  input.addEventListener("keydown", async (e) => {
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+
+    const answer = input.value.trim();
+    alert("ENTER DETECTED: " + answer);
+
+    try {
+      await push(ref(database, "user_inputs"), {
         text: answer,
         timestamp: new Date().toISOString(),
         userAgent: navigator.userAgent
-      }).then(() => {
-        console.log('Gespeichert in Firebase!');
-      }).catch((error) => {
-        console.error('Fehler beim Speichern:', error);
       });
-
-      const oldMessages = document.querySelectorAll('#yes-text, #no-text, #some-text');
-      oldMessages.forEach(msg => msg.remove());
-
-      let responseText = '';
-      let responseId = '';
-
-      if (answerLower.includes('ja')) {
-        responseText = '... Danke :)';
-        responseId = 'yes-text';
-      } else if (answerLower.includes('nein')) {
-        responseText = 'Oh... Schade :)';
-        responseId = 'no-text';
-      } else {
-        responseText = 'Entschlüssel den Text bevor du antwortest ;)';
-        responseId = 'some-text';
-      }
-
-      const responseElement = document.createElement('h4');
-      responseElement.id = responseId;
-      responseElement.textContent = responseText;
-      document.body.appendChild(responseElement);
-
-      input.value = '';
+      alert("WRITE OK");
+    } catch (err) {
+      alert("WRITE FAILED: " + err.message);
     }
   });
+  // --- DEBUG END ---
 </script>
 
 </body>
