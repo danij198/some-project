@@ -1,18 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>???</title>
+
+  <style>
+    body {
+      background-color: #400417;
+    }
+
+    #first-text,
+    #second-text,
+    #third-text,
+    #fourth-text {
+      padding-top: 20px;
+      padding-bottom: 10px;
+      text-align: center;
+    }
+
+    #yes-text,
+    #no-text,
+    #some-text {
+      font-size: 50px;
+      padding-top: 20px;
+      padding-bottom: 10px;
+      text-align: center;
+      color: #FFD1B0;
+    }
+
+    input[type="text"] {
+      display: block;
+      margin: 70px auto 0;
+      width: 500px;
+      max-width: 90%;
+      padding: 14px;
+      font-size: 1.3rem;
+      border-radius: 6px;
+      border: 2px solid #888;
+    }
+  </style>
 </head>
-<body style="background-color:#400417;">
 
-<h4 style="color:#ADE2FF;">CAESAR DAS IST DAS VERSCHLUESSELUNGSVERFAHREN DES NAECHSTEN TEXTES</h4>
+<body>
 
-<h3 style="color:#C480FF;">JWUSBSFS WB RSF DZIG QWHM KC RWS YCSFDSFUFCSGGSB GWQVHPOF KIFRSB SWB KSU RSG HFOBGDCFHG ROG SFGHS AOZ OZG KWF PSWRS GC FWQVHWU ZOQVHSB ROG WGH RSF GQVZISGGSZ</h3>
+  <h4 id="first-text" style="color:#ADE2FF;">CAESAR DAS IST DAS VERSCHLUESSELUNGSVERFAHREN DES
+    NAECHSTEN TEXTES</h4>
 
-<h2 style="color:#FF8CCA;">BSJHHIH RXTYSC LNKSG TMESD MNTLTH YVPPC CVQPCHVB YLFVRH CEJHLDRR</h2>
+  <h3 id="second-text" style="color:#C480FF;">JWUSBSFS WB RSF DZIG QWHM KC RWS YCSFDSFUFCSGGSB
+    GWQVHPOF KIFRSB SWB KSU
+    RSG HFOBGDCFHG ROG
+    SFGHS AOZ OZG KWF PSWRS GC FWQVHWU ZOQVHSB ROG WGH RSF GQVZISGGSZ</h3>
 
-<h1 style="color:#FFD1B0;">isk kdoj tisk ad jigfdc wjendwq, ho tr jqvdp df udcjgqigpqdw fdskpq, rgt tr pdwqjpq gjig, dcph... viccpq tr fjigj udcjgqigj pjig? :)</h1>
+  <h2 id="third-text" style="color:#FF8CCA;">BSJHHIH RXTYSC LNKSG TMESD MNTLTH YVPPC CVQPCHVB YLFVRH
+    CEJHLDRR</h2>
+
+  <h1 id="fourth-text" style="color:#FFD1B0;">Isk kdoj tisk ad jigfdc wjendwq, ho tr jqvdp df
+    Udcjgqigpqdw fdskpq, rgt
+    tr pdwqjpq gjig, dcph... viccpq tr fjigj Udcjgqigj pjig? :)</h1>
+
+  <input type="text" placeholder="Deine Antwort...">
+
+  <script>
+    const input = document.querySelector('input[type="text"]');
+
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        const answer = input.value.trim().toLowerCase();
+
+        const oldMessages = document.querySelectorAll('#yes-text, #no-text, #some-text');
+        oldMessages.forEach(msg => msg.remove());
+
+        let responseText = '';
+        let responseId = '';
+
+        if (answer.includes('ja')) {
+          responseText = 'Moi... Dankeee <3';
+          responseId = 'yes-text';
+        } else if (answer.includes('nein')) {
+          responseText = 'Ohhh... Schadeee :o';
+          responseId = 'no-text';
+        } else {
+          responseText = 'Entschlüssel den Text bevor du antwortest ;)';
+          responseId = 'some-text';
+        }
+
+        const responseElement = document.createElement('h4');
+        responseElement.id = responseId;
+        responseElement.textContent = responseText;
+        document.body.appendChild(responseElement);
+        input.value = '';
+      }
+    });
+  </script>
 
 </body>
+
 </html>
