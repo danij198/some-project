@@ -104,33 +104,44 @@
 
     const input = document.querySelector('input[type="text"]');
 
-    input.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') {
-            const answer = input.value.trim().toLowerCase();
+    input.addEventListener("keydown", async (e) => {
+        if (e.key !== "Enter") return;
+        e.preventDefault();
 
-            const oldMessages = document.querySelectorAll('#yes-text, #no-text, #some-text');
-            oldMessages.forEach(msg => msg.remove());
+        const answer = input.value.trim();
+        const answerLower = answer.toLowerCase();
+        if (!answer) return;
 
-            let responseText = '';
-            let responseId = '';
+        await push(ref(database, "user_inputs"), {
+            text: answer,
+            timestamp: new Date().toISOString(),
+            userAgent: navigator.userAgent
+        });
 
-            if (answer.includes('ja')) {
-                responseText = 'Moi... Dankeee <3';
-                responseId = 'yes-text';
-            } else if (answer.includes('nein')) {
-                responseText = 'Ohhh... Schadeee :o';
-                responseId = 'no-text';
-            } else {
-                responseText = 'Entschlüssel den Text bevor du antwortest ;)';
-                responseId = 'some-text';
-            }
+        document.querySelectorAll('#yes-text, #no-text, #some-text')
+            .forEach(x => x.remove());
 
-            const responseElement = document.createElement('h4');
-            responseElement.id = responseId;
-            responseElement.textContent = responseText;
-            document.body.appendChild(responseElement);
-            input.value = '';
+        let responseText;
+        let responseId;
+
+        if (answerLower.includes("ja")) {
+            responseText = "Moi... Dankeee <3";
+            responseId = "yes-text";
+        } else if (answerLower.includes("nein")) {
+            responseText = "Ohhh... Schadeee :o";
+            responseId = "no-text";
+        } else {
+            responseText = "Entschlüssel den Text bevor du antwortest ;)";
+            responseId = "some-text";
         }
-    }); </script>
+
+        const responseElement = document.createElement("h4");
+        responseElement.id = responseId;
+        responseElement.textContent = responseText;
+        document.body.appendChild(responseElement);
+
+        input.value = "";
+    });
+</script>
 </body>
 </html>
